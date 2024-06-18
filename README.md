@@ -1,7 +1,7 @@
 # CSI3140_A2 Yatzy game
 ### Group25
 * Tengyang Deng 300156567
-* YuWen bo 
+* Wenbo Yu 300161788
 
 ## Table of Contents
 
