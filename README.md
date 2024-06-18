@@ -36,5 +36,5 @@ Guidelines for contributing to your project.
 Information about the project's license.
 
 ## Design System
-
+This repository documents the design system for my portfolio website.
 For more details on the design system used in this project, please refer to the [Design System](/docs/design_system.md).
