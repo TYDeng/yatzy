@@ -3,26 +3,46 @@ function calScore(game, scoreBox) {
     let score = 0;
 
     switch (scoreBox) {
-        case 'one':
+        //Upper section
+        case 'Ones':
             score = specificNum(diceValues, 1);
             break;
-        case 'two':
+        case 'Twos':
             score = specificNum(diceValues, 2);
             break;
-        case 'three':
+        case 'Threes':
             score = specificNum(diceValues, 3);
             break;
-        case 'four':
+        case 'Fours':
             score = specificNum(diceValues, 4);
             break;
-        case 'five':
+        case 'Fives':
             score = specificNum(diceValues, 5);
             break;    
-        case 'six':
+        case 'Sixes':
             score = specificNum(diceValues, 6);
             break;
-        // Add cases for other score boxes (e.g., 'threes', 'fours', etc.)
-        // You can define helper functions for each specific score calculation if needed
+        
+        //Lower section
+        case 'One Pair':
+            break;
+        case 'Two Pairs':
+            break;
+        case 'Three of a Kind':
+            break;
+        case 'Four of a Kind':
+            break;
+        case 'Small Straight':
+            break;
+        case 'Large Straight':
+            break;
+        case 'Full House':
+            break;
+        case 'Chance':
+            break;      
+        case 'Yatzy':
+            break;
+
         default:
             score = 0;
             break;
