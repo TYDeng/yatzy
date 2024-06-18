@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Yatzy Manifesto</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        #gameContainer { width: 90%; max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        #diceContainer { text-align: center; padding: 20px; }
+        .dice { width: 50px; height: 50px; display: inline-block; background: url('d1.jpg') no-repeat center center; background-size: cover; }
+        #scoreTable { width: 100%; border-collapse: collapse; }
+        #scoreTable th, #scoreTable td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        #scoreTable th { background-color: #f8f8f8; }
+        .score-option { background-color: #90ee90; cursor: pointer; text-align: center; }
+        .score-filled { background-color: #d3d3d3; }
+        .section-header { background-color: #eee; font-weight: bold; text-align: center; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
+        .header { text-align: center; color: red; font-size: 24px; margin-bottom: 20px; }
+        #controls { text-align: center; }
+    </style>
+</head>
+<body>
+<div id="gameContainer">
+    <div class="header">The Yatzy Manifesto</div>
+    <div id="diceContainer">
+        <!-- Dice will dynamically change their backgrounds to reflect the rolled values -->
+        <div class="dice" style="background-image: url('d1.jpg');"></div>
+        <div class="dice" style="background-image: url('d2.jpg');"></div>
+        <div class="dice" style="background-image: url('d3.jpg');"></div>
+        <div class="dice" style="background-image: url('d4.jpg');"></div>
+        <div class="dice" style="background-image: url('d5.jpg');"></div>
+        <div class="dice" style="background-image: url('d6.jpg');"></div>
+    </div>
+    <div id="controls">
+        <button onclick="rollDice()">Roll the Dice</button>
+    </div>
+    <table id="scoreTable">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="section-header"><td colspan="2">Upper Section</td></tr>
+            <tr><td>Aces</td><td class="score-option" onclick="selectScore('Aces')">0</td></tr>
+            <tr><td>Twos</td><td class="score-option" onclick="selectScore('Twos')">0</td></tr>
+            <tr><td>Threes</td><td class="score-option" onclick="selectScore('Threes')">0</td></tr>
+            <tr><td>Fours</td><td class="score-option" onclick="selectScore('Fours')">0</td></tr>
+            <tr><td>Fives</td><td class="score-option" onclick="selectScore('Fives')">0</td></tr>
+            <tr><td>Sixes</td><td class="score-option" onclick="selectScore('Sixes')">0</td></tr>
+            <tr><td>Bonus</td><td id="bonusScore" class="score-filled">0</td></tr>
+            <tr class="section-header"><td colspan="2">Lower Section</td></tr>
+            <tr><td>Three of a Kind</td><td class="score-option" onclick="selectScore('Three of a Kind')">0</td></tr>
+            <tr><td>Four of a Kind</td><td class="score-option" onclick="selectScore('Four of a Kind')">0</td></tr>
+            <tr><td>Full House</td><td class="score-option" onclick="selectScore('Full House')">0</td></tr>
+            <tr><td>Small Straight</td><td class="score-option" onclick="selectScore('Small Straight')">0</td></tr>
+            <tr><td>Large Straight</td><td class="score-option" onclick="selectScore('Large Straight')">0</td></tr>
+            <tr><td>Yatzy</td><td class="score-option" onclick="selectScore('Yatzy')">0</td></tr>
+            <tr><td>Chance</td><td class="score-option" onclick="selectScore('Chance')">0</td></tr>
+            <tr><td>Total</td><td id="totalScore">0</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="yatzy_game.js"></script>
+<script src="yatzy_engine.js"></script>
+<script src="dice.js"></script>
+<script>
+// You will need to implement the rollDice and selectScore functions to handle the game logic.
+function rollDice() {
+    console.log("Dice rolled");
+    // Here you will need to randomly select dice numbers and update the dot classes accordingly
+}
+
+function selectScore(category) {
+    console.log("Score selected for:", category);
+    updateTotalScore();
+}
+
+function updateTotalScore() {
+    let total = 0;
+    document.querySelectorAll('.score-option').forEach(function(scoreCell) {
+        total += parseInt(scoreCell.textContent, 10);
+    });
+    document.getElementById('totalScore').textContent = total;
+}
+</script>
+</body>
+</html>
