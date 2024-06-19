@@ -98,7 +98,7 @@ function calScore(game, scoreBox) {//score of a specific turn for specfic scoreB
 
         case 'Yatzy':
             for (let val in countVal) {
-                if (countVal[val] === 5) score = 50;
+                if (countVal[val] === 5 && val > 0) score = 50;
             }
             break;
 
