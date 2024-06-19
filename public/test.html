@@ -67,38 +67,39 @@
         </thead>
         <tbody>
             <!-- Upper section -->
-            <tr class="section-header"><td colspan="2">Upper Section</td></tr>
-            <tr><td>Ones</td><td id="Ones" class="score-option" onclick="selectScore('Ones')">0</td></tr>
-            <tr><td>Twos</td><td id="Twos" class="score-option" onclick="selectScore('Twos')">0</td></tr>
-            <tr><td>Threes</td><td id="Threes" class="score-option" onclick="selectScore('Threes')">0</td></tr>
-            <tr><td>Fours</td><td id="Fours" class="score-option" onclick="selectScore('Fours')">0</td></tr>
-            <tr><td>Fives</td><td id="Fives" class="score-option" onclick="selectScore('Fives')">0</td></tr>
-            <tr><td>Sixes</td><td id="Sixes" class="score-option" onclick="selectScore('Sixes')">0</td></tr>
-            <tr><td>Bonus</td><td id="bonusScore" class="score-filled">0</td></tr>
+            <tr class="section-header"><td colspan="3">Upper Section</td></tr>
+            <tr><td>Aces</td><td id="Ones" class="score-option" >0</td><td id="potential-ones" class="potential-score" onclick="applyScore('Ones')">0</td></tr>
+            <tr><td>Twos</td><td id="Twos" class="score-option" >0</td><td id="potential-twos" class="potential-score" onclick="applyScore('Twos')">0</td></tr>
+            <tr><td>Threes</td><td id="Threes" class="score-option">0</td><td id="potential-threes" class="potential-score" onclick="applyScore('Threes')">0</td></tr>
+            <tr><td>Fours</td><td id="Fours" class="score-option">0</td><td id="potential-fours" class="potential-score" onclick="applyScore('Fours')">0</td></tr>
+            <tr><td>Fives</td><td id="Fives" class="score-option">0</td><td id="potential-fives" class="potential-score" onclick="applyScore('Fives')">0</td></tr>
+            <tr><td>Sixes</td><td id="Sixes" class="score-option" >0</td><td id="potential-sixes" class="potential-score" onclick="applyScore('Sixes')">0</td></tr>
             <!-- Lower section -->
-            <tr class="section-header"><td colspan="2">Lower Section</td></tr>
-            <tr><td>One Pair</td><td id="One Pair" class="score-option" onclick="selectScore('One Pair')">0</td></tr>
-            <tr><td>Two Pairs</td><td id="Two Pairs" class="score-option" onclick="selectScore('Two Pairs')">0</td></tr>
-            <tr><td>Three of a Kind</td><td id="Three of a Kind" class="score-option" onclick="selectScore('Three of a Kind')">0</td></tr>
-            <tr><td>Four of a Kind</td><td id="Four of a Kind" class="score-option" onclick="selectScore('Four of a Kind')">0</td></tr>
-            <tr><td>Full House</td><td id="Full House" class="score-option" onclick="selectScore('Full House')">0</td></tr>
-            <tr><td>Small Straight</td><td id="Small Straight" class="score-option" onclick="selectScore('Small Straight')">0</td></tr>
-            <tr><td>Large Straight</td><td id="Large Straight" class="score-option" onclick="selectScore('Large Straight')">0</td></tr>
-            <tr><td>Chance</td><td id="Chance" class="score-option" onclick="selectScore('Chance')">0</td></tr>
-            <tr><td>Yatzy</td><td id="Yatzy" class="score-option" onclick="selectScore('Yatzy')">0</td></tr>
+            <tr class="section-header"><td colspan="3">Lower Section</td></tr>
+            <tr><td>One Pair</td><td id="One Pair" class="score-option" >0</td><td id="potential-one-pair" class="potential-score" onclick="applyScore('One Pair')">0</td></tr>
+            <tr><td>Two Pairs</td><td id="Two Pairs" class="score-option" >0</td><td id="potential-two-pairs" class="potential-score" onclick="applyScore('Two Pairs')">0</td></tr>
+            <tr><td>Three of a Kind</td><td id="Three of a Kind" class="score-option" >0</td><td id="potential-three-of-a-kind" class="potential-score" onclick="applyScore('Three of a Kind')">0</td></tr>
+            <tr><td>Four of a Kind</td><td id="Four of a Kind" class="score-option" >0</td><td id="potential-four-of-a-kind" class="potential-score" onclick="applyScore('Four of a Kind')">0</td></tr>
+            <tr><td>Full House</td><td id="Full House" class="score-option" >0</td><td id="potential-full-house" class="potential-score" onclick="applyScore('Full House')">0</td></tr>
+            <tr><td>Small Straight</td><td id="Small Straight" class="score-option" >0</td><td id="potential-small-straight" class="potential-score" onclick="applyScore('Small Straight')">0</td></tr>
+            <tr><td>Large Straight</td><td id="Large Straight" class="score-option" >0</td><td id="potential-large-straight" class="potential-score" onclick="applyScore('Large Straight')">0</td></tr>
+            <tr><td>Chance</td><td id="Chance" class="score-option" >0</td><td id="potential-chance" class="potential-score" onclick="applyScore('Chance')">0</td></tr>
+            <tr><td>Yatzy</td><td id="Yatzy" class="score-option" >0</td><td id="potential-yatzy" class="potential-score" onclick="applyScore('Yatzy')">0</td></tr>
             <!-- Total Score -->
-            <tr><td>Total</td><td id="totalScore">0</td></tr>
+            <tr><td>Total</td><td id="totalScore">0</td><td></td></tr>
         </tbody>
     </table>
+    
 </div>
 
-<script src="/public/assets/yatzy_game.js"></script>
-<script src="/public/assets/dice.js"></script>
-<script src="/public/assets/yatzy_engine.js"></script>
+<script src="yatzy_game.js"></script>
+<script src="dice.js"></script>
+<script src="yatzy_engine.js"></script>
 <script>
     const game = new yatzyGame();
     game.initializeGame();
     setDefaultDiceImages(); // Set default dice images on load
+    let turn =1;
 
     function rollDiceAndManageGame() {
         document.querySelectorAll('.keep-checkbox').forEach((checkbox, index) => {
@@ -109,8 +110,9 @@
         updateDiceImages(); // Update the display of dice images
         updateGameStatus(); // Update the display of turns and rolls left
 
-        if (game.reRoll >= 2) {
+        if (game.reRoll >= 3) {
             updatePotentialScores(); // Calculate potential scores only after all rolls are used
+            turn ++;
         }
         
     }
@@ -125,7 +127,7 @@
 
     function updatePotentialScores() {
         //alert('This is an alert message!');
-        const scoreCategories = ['Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes', 'One Pair', 'Two Pairs', 'Three of a Kind', 'Four of a Kind', 'Small Straight', 'Large Straight', 'Full House', 'Chance', 'Yatzy'];
+        const scoreCategories = ['Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes', 'One-Pair', 'Two-Pairs', 'Three-of-a-Kind', 'Four-of-a-Kind', 'Small-Straight', 'Large-Straight', 'Full-House', 'Chance', 'Yatzy'];
         scoreCategories.forEach(category => {
             let potentialScore = calScore(game, category);
             potentialScore = 10;//test
@@ -133,18 +135,38 @@
         });
     }
 
-    function applyScore(category) {
-        const potentialScore = parseInt(document.getElementById('potential-' + category.toLowerCase()).textContent.replace('+', ''), 10);
-        document.getElementById('score-' + category.toLowerCase()).innerText = potentialScore;
-        game.scores[category] = potentialScore; // Assuming game.scores holds the actual scores
-        updateTotalScore();
-        resetForNewTurn();
-    }
+    
 
-    function updateTotalScore() {
-        const total = Object.values(game.scores).reduce((acc, curr) => acc + curr, 0);
-        document.getElementById('totalScore').innerText = total;
+    
+    function applyScore(category) {
+    const potentialScoreElement = document.getElementById('potential-' + category.toLowerCase());
+    const scoreElement = document.getElementById(category);
+
+    if (potentialScoreElement && scoreElement) {
+        // Parse the potential score, removing any '+' signs and converting to integer
+        const potentialScore = parseInt(potentialScoreElement.textContent.replace('+', ''), 10);
+        scoreElement.innerText = potentialScore;  // Update the score display for the category
+        //game.scores[category] = potentialScore;  // Update the score in the game object
+
+        // Calculate and update the total score
+        const totalScoreElement = document.getElementById('totalScore');
+        if (totalScoreElement) {
+            let currentTotal = parseInt(totalScoreElement.innerText) || 0;  // Get the current total score, defaulting to 0 if undefined
+            currentTotal += potentialScore;  // Add the potential score to the current total
+            totalScoreElement.innerText = currentTotal;  // Update the total score display
+        }
+
+        resetForNewTurn();  // Reset the game for the new turn
+    } else {
+        console.error('Element not found for category:', category);
     }
+}
+
+
+ //   function updateTotalScore() {
+  //      const total = Object.values(game.scores).reduce((acc, curr) => acc + curr, 0);
+    //    document.getElementById('totalScore').innerText = total;
+    //}
 
     function resetForNewTurn() {
         game.reRoll = 0; // Reset re-roll count at the end of a turn
@@ -154,13 +176,13 @@
     }
 
     function updateGameStatus() {
-        document.getElementById('currentTurn').textContent = `Turn: ${game.turn} of 15`;
+        document.getElementById('currentTurn').textContent = `Turn: ${turn} of 15`;
         document.getElementById('rollsLeft').textContent = `Rolls Left: ${3 - game.reRoll}`;
     }
 
     function setDefaultDiceImages() {
         document.querySelectorAll('.dice').forEach(dice => {
-            dice.style.backgroundImage = "url('d1.jpg')";
+            dice.style.backgroundImage = "url('d0.jpg')";
         });
     }
 </script>
