@@ -130,7 +130,6 @@
         const scoreCategories = ['Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes', 'One-Pair', 'Two-Pairs', 'Three-of-a-Kind', 'Four-of-a-Kind', 'Small-Straight', 'Large-Straight', 'Full-House', 'Chance', 'Yatzy'];
         scoreCategories.forEach(category => {
             let potentialScore = calScore(game, category);
-            potentialScore = 10;//test
             document.getElementById('potential-' + category.toLowerCase()).innerText = `+${potentialScore}`;
         });
     }
@@ -143,24 +142,53 @@
     const scoreElement = document.getElementById(category);
 
     if (potentialScoreElement && scoreElement) {
-        // Parse the potential score, removing any '+' signs and converting to integer
         const potentialScore = parseInt(potentialScoreElement.textContent.replace('+', ''), 10);
         scoreElement.innerText = potentialScore;  // Update the score display for the category
-        //game.scores[category] = potentialScore;  // Update the score in the game object
 
-        // Calculate and update the total score
         const totalScoreElement = document.getElementById('totalScore');
         if (totalScoreElement) {
-            let currentTotal = parseInt(totalScoreElement.innerText) || 0;  // Get the current total score, defaulting to 0 if undefined
-            currentTotal += potentialScore;  // Add the potential score to the current total
+            let currentTotal = parseInt(totalScoreElement.innerText) || 0;
+            currentTotal += potentialScore;
             totalScoreElement.innerText = currentTotal;  // Update the total score display
         }
+        // Update the total score for upper section if needed
+        if (['Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes'].includes(category)) {
+            updateUpperSectionScore();  // Update the upper section score and check the condition
+        }
+
+        
 
         resetForNewTurn();  // Reset the game for the new turn
     } else {
         console.error('Element not found for category:', category);
+        }
+    }
+
+    function updateUpperSectionScore() {
+    // Define the IDs of the elements corresponding to the upper section scores
+    const upperCategoriesIds = ['Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes'];
+    let upperScore = 0;
+
+    // Loop through each ID, get the corresponding element, and sum the scores
+    upperCategoriesIds.forEach(categoryId => {
+        const scoreElement = document.getElementById(categoryId);
+        if (scoreElement) {
+            upperScore += parseInt(scoreElement.innerText) || 0; // Add the score, defaulting to 0 if it's not a number
+        }
+    });
+
+    // Check if the upper section score is at least 63
+    if (upperScore >= 63) {
+        const totalScoreElement = document.getElementById('totalScore');
+        if (totalScoreElement) {
+            let currentTotal = parseInt(totalScoreElement.innerText) || 0;
+            currentTotal += 50; // Add 50 points bonus
+            totalScoreElement.innerText = currentTotal; // Update the total score display
+            console.log('Added 50 points bonus for upper section score!');
+        }
     }
 }
+
 
 
  //   function updateTotalScore() {
@@ -172,6 +200,17 @@
         game.reRoll = 0; // Reset re-roll count at the end of a turn
         //game.turn++; // Increment turn count
         document.querySelectorAll('.potential-score').forEach(el => el.innerText = ''); // Clear potential scores
+        document.querySelectorAll('.keep-checkbox').forEach(checkbox => {
+        checkbox.checked = false; // Uncheck all keep-checkboxes
+        const index = checkbox.id.replace('keep', '') - 1; // Assuming IDs are 'keep1', 'keep2', etc.
+        if (index >= 0) {
+            game.diceKeep[index] = false; // Update the diceKeep array in your game object
+            }
+        });
+        document.querySelectorAll('.dice').forEach((dice, index) => {
+        dice.style.backgroundImage = "url('d0.jpg')"; // Set to default dice image
+        game.diceVal[index] = 0; // Reset dice value to 0 or an initial state if needed
+        });
         updateGameStatus(); // Reset game status for the new turn
     }
 
