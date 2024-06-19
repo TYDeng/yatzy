@@ -56,6 +56,7 @@
     </div>
     <div id="controls">
         <button onclick="rollDiceAndManageGame()">Roll the Dice</button>
+        <button onclick="resetGame()">Reset Game</button>
     </div>
     <table id="scoreTable">
         <thead>
@@ -102,20 +103,29 @@
     let turn =1;
 
     function rollDiceAndManageGame() {
+    if (turn > 15) { 
+        alert(`Game Over, Your Total Score Is: ${document.getElementById('totalScore').textContent}`);
+        return; 
+    }
+
+    if (game.reRoll < 3) { 
         document.querySelectorAll('.keep-checkbox').forEach((checkbox, index) => {
-            game.diceKeep[index] = checkbox.checked; // Update which dice to keep
+            game.diceKeep[index] = checkbox.checked; 
         });
 
-        allDiceRoll(game); // Function to roll all dice not kept
-        updateDiceImages(); // Update the display of dice images
-        updateGameStatus(); // Update the display of turns and rolls left
+        allDiceRoll(game); 
+        updateDiceImages(); 
+        updateGameStatus(); 
 
         if (game.reRoll >= 3) {
-            updatePotentialScores(); // Calculate potential scores only after all rolls are used
-            turn ++;
+            updatePotentialScores(); 
+            turn++; 
         }
-        
+    } else {
+        alert("No more Reroll times!");
     }
+}
+
 
     function updateDiceImages() {
     document.querySelectorAll('.dice').forEach((dice, index) => {
@@ -224,8 +234,9 @@
         document.getElementById('currentTurn').textContent = `Turn: ${turn} of 15`;
         document.getElementById('rollsLeft').textContent = `Rolls Left: ${3 - game.reRoll}`;
 
-        if (game.reRoll >= 3) { 
-        console.log('Current dice values:', game.diceVal); 
+        if (turn > 15) {
+        alert(`Game Over, Your Total Score Is: ${document.getElementById('totalScore').textContent}`);
+        return; 
     }
     }
 
@@ -234,6 +245,16 @@
             dice.style.backgroundImage = "url('d0.jpg')";
         });
     }
+
+    function resetGame() {
+    game.initializeGame(); 
+    setDefaultDiceImages(); 
+    turn = 1; 
+    document.getElementById('totalScore').textContent = '0'; 
+    document.querySelectorAll('.score-option').forEach(cell => cell.textContent = '0'); 
+    document.querySelectorAll('.potential-score').forEach(cell => cell.textContent = ''); 
+    updateGameStatus(); 
+}
 </script>
 
 </body>
