@@ -18,8 +18,6 @@ class scoreBoard{//All current score of socreboard
         this.lowerScore = 0;
         this.upperScore = 0;
         this.turn = 0;
-        this.diceVal = [];
-        this.diceKeep = [];
         this.scores = {
             //uppercase
             'Ones': 0,
