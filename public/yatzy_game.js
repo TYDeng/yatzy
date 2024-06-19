@@ -3,6 +3,7 @@ class yatzyGame{//current state(dice) of the game
         this.reRoll = 0; // Current Roll(for re-roll) state (0 for first roll, 1, 2)
         this.diceVal = []; // Current values on each of the 5 dice
         this.diceKeep = []; // Keep(or not)  state for dice
+        this.scoreBoard = new scoreBoard();
     }
 
     initializeGame() {//initailize as zero state (dice not roll)[suggest with 6 '?' for all dices]
@@ -40,6 +41,7 @@ class scoreBoard{//All current score of socreboard
             'Chance': 0,
             'Yatzy': 0
         };
+        this.scoredCategories = new Set();  // Set to keep track of scored categories
         this.totalScore = 0;
     }
 
