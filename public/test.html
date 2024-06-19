@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Yatzy Manifesto</title>
+    <title>Yatzy Game</title>
     <style>
         body { font-family: Arial, sans-serif; background: #f4f4f4; }
         #gameContainer { width: 90%; max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        #gameStatus { font-size: 16px; margin-bottom: 20px; }
         #diceContainer { text-align: center; padding: 20px; }
-        .dice { width: 50px; height: 50px; display: inline-block; background: url('d1.jpg') no-repeat center center; background-size: cover; }
+        .dice { width: 50px; height: 50px; display: inline-block; background-size: cover; margin: 5px; }
+        .dice-wrapper { display: inline-block; margin: 5px; text-align: center; }
+        .keep-checkbox { margin-top: 5px; }
         #scoreTable { width: 100%; border-collapse: collapse; }
         #scoreTable th, #scoreTable td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
         #scoreTable th { background-color: #f8f8f8; }
-        .score-option { background-color: #90ee90; cursor: pointer; text-align: center; }
-        .score-filled { background-color: #d3d3d3; }
-        .section-header { background-color: #eee; font-weight: bold; text-align: center; }
+        .score-option, .potential-score { background-color: #90ee90; cursor: pointer; text-align: center; }
+        .score-option { background-color: #d3d3d3; }
+        .potential-score { background-color: #c8e6c9; color: green; } /* Light green background */
         button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
         .header { text-align: center; color: red; font-size: 24px; margin-bottom: 20px; }
         #controls { text-align: center; }
@@ -22,43 +25,68 @@
 </head>
 <body>
 <div id="gameContainer">
-    <div class="header">The Yatzy Manifesto</div>
+    <div class="header">Yatzy Game</div>
+    <div id="gameStatus">
+        <span id="currentTurn">Turn: 1 of 15</span> | 
+        <span id="rollsLeft">Rolls Left: 3</span>
+    </div>
     <div id="diceContainer">
-        <!-- Dice will dynamically change their backgrounds to reflect the rolled values -->
-        <div class="dice" style="background-image: url('d1.jpg');"></div>
-        <div class="dice" style="background-image: url('d2.jpg');"></div>
-        <div class="dice" style="background-image: url('d3.jpg');"></div>
-        <div class="dice" style="background-image: url('d4.jpg');"></div>
-        <div class="dice" style="background-image: url('d5.jpg');"></div>
-        <div class="dice" style="background-image: url('d6.jpg');"></div>
+        <!-- Dice with checkboxes for keeping -->
+        <div class="dice-wrapper">
+            <div class="dice" id="dice1" style="background-image: url('d1.jpg');"></div>
+            <input type="checkbox" class="keep-checkbox" id="keep1">
+        </div>
+        <div class="dice-wrapper">
+            <div class="dice" id="dice2" style="background-image: url('d1.jpg');"></div>
+            <input type="checkbox" class="keep-checkbox" id="keep2">
+        </div>
+        <div class="dice-wrapper">
+            <div class="dice" id="dice3" style="background-image: url('d1.jpg');"></div>
+            <input type="checkbox" class="keep-checkbox" id="keep3">
+        </div>
+        <div class="dice-wrapper">
+            <div class="dice" id="dice4" style="background-image: url('d1.jpg');"></div>
+            <input type="checkbox" class="keep-checkbox" id="keep4">
+        </div>
+        
+        <div class="dice-wrapper">
+            <div class="dice" id="dice5" style="background-image: url('d1.jpg');"></div>
+            <input type="checkbox" class="keep-checkbox" id="keep5">
+        </div>
     </div>
     <div id="controls">
-        <button onclick="rollDice()">Roll the Dice</button>
+        <button onclick="rollDiceAndManageGame()">Roll the Dice</button>
     </div>
     <table id="scoreTable">
         <thead>
             <tr>
                 <th>Category</th>
                 <th>Score</th>
+                <th>Potential</th>
             </tr>
         </thead>
         <tbody>
+            <!-- Upper section -->
             <tr class="section-header"><td colspan="2">Upper Section</td></tr>
-            <tr><td>Aces</td><td class="score-option" onclick="selectScore('Aces')">0</td></tr>
-            <tr><td>Twos</td><td class="score-option" onclick="selectScore('Twos')">0</td></tr>
-            <tr><td>Threes</td><td class="score-option" onclick="selectScore('Threes')">0</td></tr>
-            <tr><td>Fours</td><td class="score-option" onclick="selectScore('Fours')">0</td></tr>
-            <tr><td>Fives</td><td class="score-option" onclick="selectScore('Fives')">0</td></tr>
-            <tr><td>Sixes</td><td class="score-option" onclick="selectScore('Sixes')">0</td></tr>
+            <tr><td>Aces</td><td id="Ones" class="score-option" onclick="selectScore('Ones')">0</td></tr>
+            <tr><td>Twos</td><td id="Twos" class="score-option" onclick="selectScore('Twos')">0</td></tr>
+            <tr><td>Threes</td><td id="Threes" class="score-option" onclick="selectScore('Threes')">0</td></tr>
+            <tr><td>Fours</td><td id="Fours" class="score-option" onclick="selectScore('Fours')">0</td></tr>
+            <tr><td>Fives</td><td id="Fives" class="score-option" onclick="selectScore('Fives')">0</td></tr>
+            <tr><td>Sixes</td><td id="Sixes" class="score-option" onclick="selectScore('Sixes')">0</td></tr>
             <tr><td>Bonus</td><td id="bonusScore" class="score-filled">0</td></tr>
+            <!-- Lower section -->
             <tr class="section-header"><td colspan="2">Lower Section</td></tr>
-            <tr><td>Three of a Kind</td><td class="score-option" onclick="selectScore('Three of a Kind')">0</td></tr>
-            <tr><td>Four of a Kind</td><td class="score-option" onclick="selectScore('Four of a Kind')">0</td></tr>
-            <tr><td>Full House</td><td class="score-option" onclick="selectScore('Full House')">0</td></tr>
-            <tr><td>Small Straight</td><td class="score-option" onclick="selectScore('Small Straight')">0</td></tr>
-            <tr><td>Large Straight</td><td class="score-option" onclick="selectScore('Large Straight')">0</td></tr>
-            <tr><td>Yatzy</td><td class="score-option" onclick="selectScore('Yatzy')">0</td></tr>
-            <tr><td>Chance</td><td class="score-option" onclick="selectScore('Chance')">0</td></tr>
+            <tr><td>One Pair</td><td id="One Pair" class="score-option" onclick="selectScore('One Pair')">0</td></tr>
+            <tr><td>Two Pairs</td><td id="Two Pairs" class="score-option" onclick="selectScore('Two Pairs')">0</td></tr>
+            <tr><td>Three of a Kind</td><td id="Three of a Kind" class="score-option" onclick="selectScore('Three of a Kind')">0</td></tr>
+            <tr><td>Four of a Kind</td><td id="Four of a Kind" class="score-option" onclick="selectScore('Four of a Kind')">0</td></tr>
+            <tr><td>Full House</td><td id="Full House" class="score-option" onclick="selectScore('Full House')">0</td></tr>
+            <tr><td>Small Straight</td><td id="Small Straight" class="score-option" onclick="selectScore('Small Straight')">0</td></tr>
+            <tr><td>Large Straight</td><td id="Large Straight" class="score-option" onclick="selectScore('Large Straight')">0</td></tr>
+            <tr><td>Chance</td><td id="Chance" class="score-option" onclick="selectScore('Chance')">0</td></tr>
+            <tr><td>Yatzy</td><td id="Yatzy" class="score-option" onclick="selectScore('Yatzy')">50</td></tr>
+            <!-- Total Score -->
             <tr><td>Total</td><td id="totalScore">0</td></tr>
         </tbody>
     </table>
@@ -68,24 +96,76 @@
 <script src="yatzy_engine.js"></script>
 <script src="dice.js"></script>
 <script>
-// You will need to implement the rollDice and selectScore functions to handle the game logic.
-function rollDice() {
-    console.log("Dice rolled");
-    // Here you will need to randomly select dice numbers and update the dot classes accordingly
-}
+    const game = new yatzyGame();
+    game.initializeGame();
+    setDefaultDiceImages(); // Set default dice images on load
 
-function selectScore(category) {
-    console.log("Score selected for:", category);
-    updateTotalScore();
-}
-
-function updateTotalScore() {
-    let total = 0;
-    document.querySelectorAll('.score-option').forEach(function(scoreCell) {
-        total += parseInt(scoreCell.textContent, 10);
+    function rollDiceAndManageGame() {
+    document.querySelectorAll('.keep-checkbox').forEach((checkbox, index) => {
+        game.diceKeep[index] = checkbox.checked; // Update which dice to keep
     });
-    document.getElementById('totalScore').textContent = total;
-}
+
+    allDiceRoll(game); // Function to roll all dice not kept
+    updateDiceImages(); // Update the display of dice images
+    game.reRoll++; // Increment the roll count
+
+    if (game.reRoll >= 3) {
+        updatePotentialScores(); // Calculate potential scores only after all rolls are used
+    }
+
+    updateGameStatus(); // Update the display of turns and rolls left
+    }
+    function updateDiceImages() {
+    document.querySelectorAll('.dice').forEach((dice, index) => {
+        if (game.diceVal.length > index) {  // Make sure dice values are assigned
+            dice.style.backgroundImage = `url('d${game.diceVal[index]}.jpg')`; // Ensure images are named d1.jpg, d2.jpg, etc.
+        }
+    });
+    }
+
+    function updatePotentialScores() {
+        const scoreCategories = ['Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes', 'One Pair', 'Two Pairs', 'Three of a Kind', 'Four of a Kind', 'Small Straight', 'Large Straight', 'Full House', 'Chance', 'Yatzy'];
+        scoreCategories.forEach(category => {
+            const potentialScore = calScore(game, category);
+            document.getElementById('potential-' + category.toLowerCase()).innerText = `+${potentialScore}`;
+        });
+    }
+
+    function applyScore(category) {
+        const potentialScore = parseInt(document.getElementById('potential-' + category.toLowerCase()).textContent.replace('+', ''), 10);
+        document.getElementById('score-' + category.toLowerCase()).innerText = potentialScore;
+        game.scores[category] = potentialScore; // Assuming game.scores holds the actual scores
+        updateTotalScore();
+        resetForNewTurn();
+    }
+
+    function updateTotalScore() {
+        const total = Object.values(game.scores).reduce((acc, curr) => acc + curr, 0);
+        document.getElementById('totalScore').innerText = total;
+    }
+
+    function resetForNewTurn() {
+        game.reRoll = 0; // Reset re-roll count at the end of a turn
+        game.turn++; // Increment turn count
+        document.querySelectorAll('.potential-score').forEach(el => el.innerText = ''); // Clear potential scores
+        updateGameStatus(); // Reset game status for the new turn
+    }
+
+    function updateGameStatus() {
+        document.getElementById('currentTurn').textContent = `Turn: ${game.turn} of 15`;
+        document.getElementById('rollsLeft').textContent = `Rolls Left: ${4 - game.reRoll}`;
+    }
+
+    function setDefaultDiceImages() {
+        document.querySelectorAll('.dice').forEach(dice => {
+            dice.style.backgroundImage = "url('d1.jpg')";
+        });
+    }
 </script>
+
 </body>
 </html>
+
+
+
+
