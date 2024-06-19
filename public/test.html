@@ -76,13 +76,13 @@
             <tr><td>Sixes</td><td id="Sixes" class="score-option" >0</td><td id="potential-sixes" class="potential-score" onclick="applyScore('Sixes')">0</td></tr>
             <!-- Lower section -->
             <tr class="section-header"><td colspan="3">Lower Section</td></tr>
-            <tr><td>One Pair</td><td id="One Pair" class="score-option" >0</td><td id="potential-one-pair" class="potential-score" onclick="applyScore('One Pair')">0</td></tr>
-            <tr><td>Two Pairs</td><td id="Two Pairs" class="score-option" >0</td><td id="potential-two-pairs" class="potential-score" onclick="applyScore('Two Pairs')">0</td></tr>
-            <tr><td>Three of a Kind</td><td id="Three of a Kind" class="score-option" >0</td><td id="potential-three-of-a-kind" class="potential-score" onclick="applyScore('Three of a Kind')">0</td></tr>
-            <tr><td>Four of a Kind</td><td id="Four of a Kind" class="score-option" >0</td><td id="potential-four-of-a-kind" class="potential-score" onclick="applyScore('Four of a Kind')">0</td></tr>
-            <tr><td>Full House</td><td id="Full House" class="score-option" >0</td><td id="potential-full-house" class="potential-score" onclick="applyScore('Full House')">0</td></tr>
-            <tr><td>Small Straight</td><td id="Small Straight" class="score-option" >0</td><td id="potential-small-straight" class="potential-score" onclick="applyScore('Small Straight')">0</td></tr>
-            <tr><td>Large Straight</td><td id="Large Straight" class="score-option" >0</td><td id="potential-large-straight" class="potential-score" onclick="applyScore('Large Straight')">0</td></tr>
+            <tr><td>One Pair</td><td id="One-Pair" class="score-option" >0</td><td id="potential-one-pair" class="potential-score" onclick="applyScore('One-Pair')">0</td></tr>
+            <tr><td>Two Pairs</td><td id="Two-Pairs" class="score-option" >0</td><td id="potential-two-pairs" class="potential-score" onclick="applyScore('Two-Pairs')">0</td></tr>
+            <tr><td>Three of a Kind</td><td id="Three-of-a-Kind" class="score-option" >0</td><td id="potential-three-of-a-kind" class="potential-score" onclick="applyScore('Three-of-a-Kind')">0</td></tr>
+            <tr><td>Four of a Kind</td><td id="Four-of-a-Kind" class="score-option" >0</td><td id="potential-four-of-a-kind" class="potential-score" onclick="applyScore('Four-of-a-Kind')">0</td></tr>
+            <tr><td>Full House</td><td id="Full-House" class="score-option" >0</td><td id="potential-full-house" class="potential-score" onclick="applyScore('Full-House')">0</td></tr>
+            <tr><td>Small Straight</td><td id="Small-Straight" class="score-option" >0</td><td id="potential-small-straight" class="potential-score" onclick="applyScore('Small-Straight')">0</td></tr>
+            <tr><td>Large Straight</td><td id="Large-Straight" class="score-option" >0</td><td id="potential-large-straight" class="potential-score" onclick="applyScore('Large-Straight')">0</td></tr>
             <tr><td>Chance</td><td id="Chance" class="score-option" >0</td><td id="potential-chance" class="potential-score" onclick="applyScore('Chance')">0</td></tr>
             <tr><td>Yatzy</td><td id="Yatzy" class="score-option" >0</td><td id="potential-yatzy" class="potential-score" onclick="applyScore('Yatzy')">0</td></tr>
             <!-- Total Score -->
@@ -130,6 +130,8 @@
         const scoreCategories = ['Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes', 'One-Pair', 'Two-Pairs', 'Three-of-a-Kind', 'Four-of-a-Kind', 'Small-Straight', 'Large-Straight', 'Full-House', 'Chance', 'Yatzy'];
         scoreCategories.forEach(category => {
             let potentialScore = calScore(game, category);
+            //let potentialScore = 10;
+            
             document.getElementById('potential-' + category.toLowerCase()).innerText = `+${potentialScore}`;
         });
     }
@@ -141,9 +143,18 @@
     const potentialScoreElement = document.getElementById('potential-' + category.toLowerCase());
     const scoreElement = document.getElementById(category);
 
+    // Check if the category has already been scored
+    if (game.scoreBoard.scoredCategories.has(category)) {
+        console.error('Score has already been applied for:', category);
+        alert('This category has already been scored!');
+        return; // Prevent scoring if already scored
+    }
+
     if (potentialScoreElement && scoreElement) {
         const potentialScore = parseInt(potentialScoreElement.textContent.replace('+', ''), 10);
         scoreElement.innerText = potentialScore;  // Update the score display for the category
+        game.scoreBoard.scores[category] = potentialScore;  // Update the score in the scoreboard
+        game.scoreBoard.scoredCategories.add(category);  // Mark this category as scored
 
         const totalScoreElement = document.getElementById('totalScore');
         if (totalScoreElement) {
@@ -151,18 +162,13 @@
             currentTotal += potentialScore;
             totalScoreElement.innerText = currentTotal;  // Update the total score display
         }
-        // Update the total score for upper section if needed
-        if (['Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes'].includes(category)) {
-            updateUpperSectionScore();  // Update the upper section score and check the condition
-        }
-
-        
-
+        updateUpperSectionScore();  // Update the upper section score and check the condition
         resetForNewTurn();  // Reset the game for the new turn
     } else {
         console.error('Element not found for category:', category);
-        }
     }
+}
+
 
     function updateUpperSectionScore() {
     // Define the IDs of the elements corresponding to the upper section scores
@@ -217,6 +223,10 @@
     function updateGameStatus() {
         document.getElementById('currentTurn').textContent = `Turn: ${turn} of 15`;
         document.getElementById('rollsLeft').textContent = `Rolls Left: ${3 - game.reRoll}`;
+
+        if (game.reRoll >= 3) { 
+        console.log('Current dice values:', game.diceVal); 
+    }
     }
 
     function setDefaultDiceImages() {

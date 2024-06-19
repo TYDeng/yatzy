@@ -28,7 +28,8 @@ function calScore(game, scoreBox) {//score of a specific turn for specfic scoreB
             break;
         
         //Lower section
-        case 'One Pair':
+        case 'One-Pair':
+
             let LargestPair = 0;
             //Find largest pair of val in 5 dices
             for (let val in countVal) {
@@ -37,9 +38,10 @@ function calScore(game, scoreBox) {//score of a specific turn for specfic scoreB
                 }
             }
             score = LargestPair * 2;
+           
             break;
 
-        case 'Two Pairs':
+        case 'Two-Pairs':
             let pairs = [];
             for (let val in countVal) {
                 if (countVal[val] >= 2) {
@@ -52,7 +54,7 @@ function calScore(game, scoreBox) {//score of a specific turn for specfic scoreB
             }
             break;
 
-        case 'Three of a Kind':
+        case 'Three-of-a-Kind':
             for (let val in countVal) {
                 if (countVal[val] >= 3) {
                     score = val;
@@ -61,7 +63,7 @@ function calScore(game, scoreBox) {//score of a specific turn for specfic scoreB
             score = score*3;
             break;
 
-        case 'Four of a Kind':
+        case 'Four-of-a-Kind':
             for (let val in countVal) {
                 if (countVal[val] >= 4) {
                     score = val;
@@ -70,17 +72,17 @@ function calScore(game, scoreBox) {//score of a specific turn for specfic scoreB
             score = score*4;
             break;
 
-        case 'Small Straight':
+        case 'Small-Straight':
             if (diceVal.toSorted() == [1, 2, 3, 4, 5])
                 score = 15;
             break;
 
-        case 'Large Straight':
+        case 'Large-Straight':
             if (diceVal.toSorted() == [2, 3, 4, 5, 6])
                 score = 20;
             break;
 
-        case 'Full House':
+        case 'Full-House':
             let combThree = 0;
             let combTwo = 0;
             for (let val in countVal) {
@@ -95,6 +97,7 @@ function calScore(game, scoreBox) {//score of a specific turn for specfic scoreB
             for (let val in countVal) {
                 score = score + countVal[val]*val;
             }
+            
             break;  
 
         case 'Yatzy':
