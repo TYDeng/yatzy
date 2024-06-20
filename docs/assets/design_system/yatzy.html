@@ -6,10 +6,10 @@
     <title>Yatzy Game</title>
     <style>
         body { font-family: Arial, sans-serif; background: #f4f4f4; }
-        #gameContainer { width: 90%; max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        #gameStatus { font-size: 16px; margin-bottom: 20px; }
+        #gameContainer { width: 90%; max-width: 800px; margin: 20px auto; padding: 20px; background: rgb(247, 236, 236); border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        #gameStatus { font-size: 25px; margin-bottom: 20px; }
         #diceContainer { text-align: center; padding: 20px; }
-        .dice { width: 50px; height: 50px; display: inline-block; background-size: cover; margin: 5px; }
+        .dice { width: 100px; height: 100px; display: inline-block; background-size: cover; margin: 5px; }
         .dice-wrapper { display: inline-block; margin: 5px; text-align: center; }
         .keep-checkbox { margin-top: 5px; }
         #scoreTable { width: 100%; border-collapse: collapse; }
@@ -19,7 +19,7 @@
         .score-option { background-color: #d3d3d3; }
         .potential-score { background-color: #c8e6c9; color: green; } /* Light green background */
         button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
-        .header { text-align: center; color: red; font-size: 24px; margin-bottom: 20px; }
+        .header { text-align: center; color: black; font-size: 40px; margin-bottom: 20px; background-color: aqua; border: solid; font-family: 'Times New Roman', Times, serif;}
         #controls { text-align: center; }
     </style>
 </head>
@@ -68,15 +68,15 @@
         </thead>
         <tbody>
             <!-- Upper section -->
-            <tr class="section-header"><td colspan="3">Upper Section</td></tr>
-            <tr><td>Aces</td><td id="Ones" class="score-option" >0</td><td id="potential-ones" class="potential-score" onclick="applyScore('Ones')">0</td></tr>
+            <tr class="section-header"><td colspan="3">Upper Section:</td></tr>
+            <tr><td>Onces</td><td id="Ones" class="score-option" >0</td><td id="potential-ones" class="potential-score" onclick="applyScore('Ones')">0</td></tr>
             <tr><td>Twos</td><td id="Twos" class="score-option" >0</td><td id="potential-twos" class="potential-score" onclick="applyScore('Twos')">0</td></tr>
             <tr><td>Threes</td><td id="Threes" class="score-option">0</td><td id="potential-threes" class="potential-score" onclick="applyScore('Threes')">0</td></tr>
             <tr><td>Fours</td><td id="Fours" class="score-option">0</td><td id="potential-fours" class="potential-score" onclick="applyScore('Fours')">0</td></tr>
             <tr><td>Fives</td><td id="Fives" class="score-option">0</td><td id="potential-fives" class="potential-score" onclick="applyScore('Fives')">0</td></tr>
             <tr><td>Sixes</td><td id="Sixes" class="score-option" >0</td><td id="potential-sixes" class="potential-score" onclick="applyScore('Sixes')">0</td></tr>
             <!-- Lower section -->
-            <tr class="section-header"><td colspan="3">Lower Section</td></tr>
+            <tr class="section-header"><td colspan="3">Lower Section:</td></tr>
             <tr><td>One Pair</td><td id="One-Pair" class="score-option" >0</td><td id="potential-one-pair" class="potential-score" onclick="applyScore('One-Pair')">0</td></tr>
             <tr><td>Two Pairs</td><td id="Two-Pairs" class="score-option" >0</td><td id="potential-two-pairs" class="potential-score" onclick="applyScore('Two-Pairs')">0</td></tr>
             <tr><td>Three of a Kind</td><td id="Three-of-a-Kind" class="score-option" >0</td><td id="potential-three-of-a-kind" class="potential-score" onclick="applyScore('Three-of-a-Kind')">0</td></tr>
@@ -91,6 +91,15 @@
         </tbody>
     </table>
     
+    <footer style="background-color: pink; padding: 20px; color: black;">
+        <p>&copy; 2024 Yatzy Game. All rights reserved.</p>
+        <nav>
+            <ul>
+                <li><p>Tengyang Deng</p></li>
+                <li><p>Wenbo Yu</p></li>
+            </ul>
+        </nav>
+    </footer>
 </div>
 
 <script src="yatzy_game.js"></script>
@@ -143,6 +152,9 @@
             //let potentialScore = 10;
             
             document.getElementById('potential-' + category.toLowerCase()).innerText = `+${potentialScore}`;
+            if(game.scoreBoard.scoredCategories.has(category)){
+                document.getElementById('potential-' + category.toLowerCase()).innerText = `Selected`;
+            }
         });
     }
 
@@ -164,6 +176,7 @@
         const potentialScore = parseInt(potentialScoreElement.textContent.replace('+', ''), 10);
         scoreElement.innerText = potentialScore;  // Update the score display for the category
         game.scoreBoard.scores[category] = potentialScore;  // Update the score in the scoreboard
+        //
         game.scoreBoard.scoredCategories.add(category);  // Mark this category as scored
 
         const totalScoreElement = document.getElementById('totalScore');
@@ -204,13 +217,6 @@
         }
     }
 }
-
-
-
- //   function updateTotalScore() {
-  //      const total = Object.values(game.scores).reduce((acc, curr) => acc + curr, 0);
-    //    document.getElementById('totalScore').innerText = total;
-    //}
 
     function resetForNewTurn() {
         game.reRoll = 0; // Reset re-roll count at the end of a turn

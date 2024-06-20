@@ -11,6 +11,6 @@ This repository documents the design system for my Yatzy game website. This game
 Run the test.html for running the code
 
 ## Screenshots
-
+![common states](states.png)
 ## Design System
 For more details on the design system used in this project, please refer to the [Design System](/docs/design_system.md).
