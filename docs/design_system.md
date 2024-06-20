@@ -1,11 +1,11 @@
 # Design System
 This document outlines the design system for the project.
 ## Fonts
-- **Primary Font:** [Add details here]
-- **Secondary Font:** [Add details here]
+- **Primary Font:** Arial, sans-serif
+- **Secondary Font:** Times, serif
 ## Colours
-- **Primary Colour:** [Add details here]
-- **Secondary Colour:** [Add details here]
+- **Primary Colour:** rgb(247, 236, 236)
+- **Secondary Colour:** aqua
 ## Components
 ### Header
 ![Header](assets/design_system/header.png)
